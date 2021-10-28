@@ -22,8 +22,9 @@ def test_echo_upload():
     for path in img_saved_path.glob("*"):
         response = client.post("/img-echo/", files={"file": open(path, 'rb')})
         assert response.status_code == 200
-        print(response.headers)
+        fext = str(path.suffix).replace('.', '')
+        assert fext in response.headers['content-type']
         #assert "application/json" in response.headers['content-type']
         #assert response.json() == {"hello": "world"}
-    #time.sleep(3)
-    #shutil.rmtree(UPLOAD_DIR)
+    time.sleep(3)
+    shutil.rmtree(UPLOAD_DIR)
